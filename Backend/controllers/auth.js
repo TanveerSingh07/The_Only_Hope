@@ -47,3 +47,13 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+// @desc    Get current logged in user data (For the Nav Bar!)
+// @route   GET /api/auth/me
+export const getMe = async (req, res) => {
+  res.status(200).json({
+    id: req.user._id,
+    name: req.user.name,
+    email: req.user.email,
+  });
+};
