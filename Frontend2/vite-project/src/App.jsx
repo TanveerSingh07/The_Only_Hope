@@ -1,121 +1,51 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+// App.jsx — Root component.
+// Holds all global state (current page, logged-in user, etc.)
+// and passes it down to child components via props.
+// We use manual page state instead of React Router <Routes>
+// because the original design uses a single-page "page switcher" pattern.
 
-function App() {
-  const [count, setCount] = useState(0)
+import { useState } from "react";
+import Navbar from "./components/Navbar/Navbar";
+
+export default function App() {
+  // page — which screen is currently visible
+  const [page, setPage] = useState("landing");
+  // user — null when logged out, { name, mode } when logged in
+  const [user, setUser] = useState(null);
+
+  const nav = (p) => setPage(p);
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div style={{ minHeight: "100vh", background: "#05030e", color: "#f1f5f9" }}>
+      <Navbar
+        page={page}
+        onNav={nav}
+        user={user}
+        onAuthClick={() => console.log("auth modal — coming soon")}
+      />
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+      {/* Placeholder content so you can see the navbar in context */}
+      <div style={{ paddingTop: 68, display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
+        <div style={{ textAlign: "center" }}>
+          <div style={{ fontSize: 60, marginBottom: 16 }}>🧭</div>
+          <h1 style={{ fontFamily: "sans-serif", fontSize: 32, marginBottom: 12 }}>PathFinder</h1>
+          <p style={{ color: "#94a3b8" }}>Current page: <strong style={{ color: "#22d3ee" }}>{page}</strong></p>
+          {/* Temp buttons to test navbar active state */}
+          <div style={{ display: "flex", gap: 10, justifyContent: "center", marginTop: 24, flexWrap: "wrap" }}>
+            {["landing", "goal"].map((p) => (
+              <button key={p} onClick={() => nav(p)}
+                style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", color: "#f1f5f9", padding: "8px 18px", borderRadius: 8, cursor: "pointer" }}>
+                Go to {p}
+              </button>
+            ))}
+            {/* Simulate login to test user state in navbar */}
+            <button onClick={() => setUser(user ? null : { name: "Alex", mode: "authenticated" })}
+              style={{ background: "rgba(34,211,238,0.1)", border: "1px solid rgba(34,211,238,0.3)", color: "#22d3ee", padding: "8px 18px", borderRadius: 8, cursor: "pointer" }}>
+              {user ? "Log out (test)" : "Log in (test)"}
+            </button>
+          </div>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      </div>
+    </div>
+  );
 }
-
-export default App

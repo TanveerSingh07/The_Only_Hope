@@ -1,0 +1,234 @@
+/* Navbar.module.css
+   CSS Modules: every class here is locally scoped.
+   In JSX we write styles.navLink — at build time it becomes
+   something like "Navbar_navLink__xK2pQ" automatically.
+   This prevents ANY style collision with other components. */
+
+/* ── BASE NAV ─────────────────────────────────────────────── */
+.nav {
+  position: fixed;        /* stays at top while scrolling */
+  top: 0; left: 0; right: 0;
+  z-index: 1000;          /* above all page content */
+  padding: 0 var(--space-6);
+  transition: var(--transition);
+}
+
+/* Inner row: logo | links | buttons — space-between layout */
+.inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+}
+
+/* When user scrolls down — frosted glass effect */
+.scrolled {
+  background: rgba(6, 6, 15, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+}
+
+/* ── LOGO ─────────────────────────────────────────────────── */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-strong);
+  text-decoration: none;
+  letter-spacing: -0.03em;
+  flex-shrink: 0;  /* don't let it compress on small screens */
+}
+
+.logo:hover { opacity: 0.85; }
+
+/* ── DESKTOP LINKS ────────────────────────────────────────── */
+.desktopLinks {
+  display: flex;
+  list-style: none;
+  gap: var(--space-1);
+  align-items: center;
+}
+
+.navLink {
+  position: relative;   /* needed for the activeDot pseudo-element */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-2) var(--space-4);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-body);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+
+.navLink:hover {
+  color: var(--text-strong);
+  background: var(--primary-dim);
+}
+
+.activeLink {
+  color: var(--text-strong);
+  font-weight: 600;
+}
+
+/* The animated underline dot below active link */
+.activeDot {
+  position: absolute;
+  bottom: 4px;
+  left: 50%; transform: translateX(-50%);
+  width: 4px; height: 4px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+}
+
+/* ── AUTH BUTTONS ─────────────────────────────────────────── */
+.authButtons {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.btnGhost {
+  padding: 8px 18px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-body);
+  text-decoration: none;
+  border-radius: var(--radius-full);
+  transition: var(--transition);
+}
+
+.btnGhost:hover {
+  color: var(--text-strong);
+  background: var(--bg-subtle);
+}
+
+.btnPrimary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--primary);
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  transition: var(--transition);
+  box-shadow: 0 4px 16px var(--primary-glow);
+}
+
+.btnPrimary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px var(--primary-glow);
+  opacity: 0.92;
+}
+
+.btnArrow {
+  font-size: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.btnPrimary:hover .btnArrow {
+  transform: translateX(3px);
+}
+
+/* ── HAMBURGER ────────────────────────────────────────────── */
+.hamburger {
+  display: none;   /* hidden on desktop */
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.bar {
+  display: block;
+  width: 22px; height: 2px;
+  background: var(--text-strong);
+  border-radius: 2px;
+  transition: var(--transition);
+  transform-origin: center;
+}
+
+/* Animate bars into an X when menu is open */
+.barTop  { transform: translateY(7px) rotate(45deg);  }
+.barMid  { opacity: 0; transform: scaleX(0);          }
+.barBot  { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── MOBILE MENU ──────────────────────────────────────────── */
+.mobileMenu {
+  overflow: hidden;
+  background: var(--bg-raised);
+  border-top: 1px solid var(--border);
+}
+
+.mobileLinks {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: var(--space-4) var(--space-6) var(--space-6);
+  gap: var(--space-1);
+}
+
+.mobileLink {
+  display: block;
+  padding: var(--space-3) var(--space-4);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-body);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.mobileLink:hover, .mobileLinkActive {
+  color: var(--text-strong);
+  background: var(--primary-dim);
+}
+
+.mobileCta {
+  display: block;
+  margin-top: var(--space-4);
+  padding: var(--space-4);
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--primary);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.mobileCta:hover { opacity: 0.88; }
+
+/* ── RESPONSIVE ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .desktopLinks { display: none; }
+  .authButtons  { display: none; }
+  .hamburger    { display: flex; }
+}
+/* ── NAVBAR OFFSET ───────────────────────────────────────────
+   The Navbar is fixed (floating), so it sits ON TOP of page
+   content. Without this, your hero section's top gets hidden
+   behind the navbar. 68px matches the navbar height exactly.
+   Every page that needs full-height layout should use this.
+   ──────────────────────────────────────────────────────────── */
+.page-top-offset {
+  padding-top: 68px;
+}
