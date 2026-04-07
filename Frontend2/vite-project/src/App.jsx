@@ -1,51 +1,158 @@
-// App.jsx — Root component.
-// Holds all global state (current page, logged-in user, etc.)
-// and passes it down to child components via props.
-// We use manual page state instead of React Router <Routes>
-// because the original design uses a single-page "page switcher" pattern.
+// App.jsx — Root component and single source of truth.
+//
+// STATE OVERVIEW:
+//   page          — which screen is rendered (string id)
+//   user          — logged-in user object or null
+//   showAuth      — whether the auth modal is open
+//   authMode      — "login" or "signup" (controls modal heading)
+//   obAnswers     — answers from the Onboarding screen
+//   taskResults   — results array from the Task Arena
+//   analysis      — final AI analysis object from Processing screen
+//
+// NAVIGATION PATTERN:
+//   We use a simple page state string instead of React Router <Routes>.
+//   Every screen receives `onNavigate` (or `onNav`) as a prop and calls
+//   it with the target page id — e.g. onNavigate("dashboard").
+//   This keeps all routing logic in one place (here).
 
 import { useState } from "react";
 import Navbar from "./components/Navbar/Navbar";
+import Orbs from "./components/Orbs/Orbs";
+
+// ── Page imports (each will be created in upcoming steps) ──
+// We import them lazily with a fallback so the app doesn't crash
+// before each screen is built. Replace the placeholders as we go.
+const Placeholder = ({ name }) => (
+  <div style={{
+    minHeight: "100vh", display: "flex", alignItems: "center",
+    justifyContent: "center", flexDirection: "column", gap: 16,
+    paddingTop: 68,
+  }}>
+    <Orbs />
+    <div style={{ position: "relative", zIndex: 1, textAlign: "center" }}>
+      <div style={{ fontSize: 56, marginBottom: 16 }}>🚧</div>
+      <h2 className="ff" style={{ fontSize: 28, marginBottom: 8 }}>{name}</h2>
+      <p style={{ color: "#94a3b8" }}>Coming in the next step</p>
+    </div>
+  </div>
+);
 
 export default function App() {
-  // page — which screen is currently visible
+  // ── Global state ──────────────────────────────────────────
   const [page, setPage] = useState("landing");
-  // user — null when logged out, { name, mode } when logged in
   const [user, setUser] = useState(null);
+  const [showAuth, setShowAuth] = useState(false);
+  const [authMode, setAuthMode] = useState("signup");
+  const [obAnswers, setObAnswers] = useState(null);
+  const [taskResults, setTaskResults] = useState(null);
+  const [analysis, setAnalysis] = useState(null);
 
+  // ── Navigation helper ─────────────────────────────────────
   const nav = (p) => setPage(p);
 
+  // ── Auth handlers ─────────────────────────────────────────
+  // Called when user submits the auth modal
+  const handleAuth = (userData) => {
+    setUser(userData);
+    setShowAuth(false);
+    // After login, send them to onboarding if no analysis yet
+    if (page === "landing") nav("onboarding");
+  };
+
+  // Called when "Start My Journey" is clicked on Landing
+  const handleStart = () => {
+    if (!user) {
+      setAuthMode("signup");
+      setShowAuth(true);
+    } else if (analysis) {
+      nav("dashboard");       // already has results → go to dashboard
+    } else {
+      nav("onboarding");      // first time → start the flow
+    }
+  };
+
+  // ── Render ────────────────────────────────────────────────
   return (
     <div style={{ minHeight: "100vh", background: "#05030e", color: "#f1f5f9" }}>
+
+      {/* Navbar is always visible */}
       <Navbar
         page={page}
         onNav={nav}
         user={user}
-        onAuthClick={() => console.log("auth modal — coming soon")}
+        onAuthClick={() => { setAuthMode("login"); setShowAuth(true); }}
       />
 
-      {/* Placeholder content so you can see the navbar in context */}
-      <div style={{ paddingTop: 68, display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
-        <div style={{ textAlign: "center" }}>
-          <div style={{ fontSize: 60, marginBottom: 16 }}>🧭</div>
-          <h1 style={{ fontFamily: "sans-serif", fontSize: 32, marginBottom: 12 }}>PathFinder</h1>
-          <p style={{ color: "#94a3b8" }}>Current page: <strong style={{ color: "#22d3ee" }}>{page}</strong></p>
-          {/* Temp buttons to test navbar active state */}
-          <div style={{ display: "flex", gap: 10, justifyContent: "center", marginTop: 24, flexWrap: "wrap" }}>
-            {["landing", "goal"].map((p) => (
-              <button key={p} onClick={() => nav(p)}
-                style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", color: "#f1f5f9", padding: "8px 18px", borderRadius: 8, cursor: "pointer" }}>
-                Go to {p}
-              </button>
-            ))}
-            {/* Simulate login to test user state in navbar */}
-            <button onClick={() => setUser(user ? null : { name: "Alex", mode: "authenticated" })}
-              style={{ background: "rgba(34,211,238,0.1)", border: "1px solid rgba(34,211,238,0.3)", color: "#22d3ee", padding: "8px 18px", borderRadius: 8, cursor: "pointer" }}>
-              {user ? "Log out (test)" : "Log in (test)"}
+      {/* Auth modal placeholder — Step 4 will replace this */}
+      {showAuth && (
+        <div style={{
+          position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)",
+          zIndex: 999, display: "flex", alignItems: "center", justifyContent: "center",
+        }}>
+          <div className="glass" style={{ padding: 40, maxWidth: 400, width: "100%", margin: 24, textAlign: "center" }}>
+            <div style={{ fontSize: 40, marginBottom: 16 }}>🧭</div>
+            <h2 className="ff" style={{ marginBottom: 8 }}>Auth Modal</h2>
+            <p style={{ color: "#94a3b8", marginBottom: 24 }}>Coming in Step 4</p>
+            {/* Temp: quick login for testing */}
+            <button
+              onClick={() => handleAuth({ name: "Alex", email: "alex@test.com", mode: "authenticated" })}
+              style={{
+                background: "linear-gradient(135deg,#22d3ee,#a78bfa)",
+                border: "none", borderRadius: 10, padding: "12px 28px",
+                color: "#05030e", fontWeight: 700, fontSize: 15, cursor: "pointer",
+                marginRight: 10,
+              }}
+            >
+              Quick Login (test)
+            </button>
+            <button
+              onClick={() => setShowAuth(false)}
+              style={{
+                background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: 10, padding: "12px 28px", color: "#f1f5f9",
+                fontWeight: 700, fontSize: 15, cursor: "pointer",
+              }}
+            >
+              Close
             </button>
           </div>
         </div>
-      </div>
+      )}
+
+      {/* ── Page Router ───────────────────────────────────── */}
+      {/* Each condition renders one screen. Props flow down from here. */}
+
+      {page === "landing" && (
+        <Placeholder name="Landing Page — Step 4" />
+      )}
+
+      {page === "onboarding" && (
+        <Placeholder name="Onboarding — Step 5" />
+      )}
+
+      {page === "arena" && (
+        <Placeholder name="Task Arena — Step 6" />
+      )}
+
+      {page === "processing" && (
+        <Placeholder name="Processing — Step 7" />
+      )}
+
+      {page === "dashboard" && (
+        <Placeholder name="Dashboard — Step 8" />
+      )}
+
+      {page === "careers" && (
+        <Placeholder name="Career Paths — Step 9" />
+      )}
+
+      {page === "learning" && (
+        <Placeholder name="Learning Path — Step 10" />
+      )}
+
+      {page === "goal" && (
+        <Placeholder name="Our Goal — Step 11" />
+      )}
     </div>
   );
 }
