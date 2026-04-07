@@ -119,21 +119,21 @@ export default function Landing({ onStart, onLogin }) {
 
     const features = [
         {
-            icon: "🧠",
+            icon: "brain",
             title: "Behavioral Intelligence",
             desc: "We watch how you think — not what you claim. Real tasks surface genuine cognitive patterns that self-reporting misses.",
             color: "#22d3ee",
             stat: "3x more accurate than personality tests",
         },
         {
-            icon: "🎯",
+            icon: "target",
             title: "Precision AI Matching",
             desc: "Your behavioral fingerprint gets mapped to career domains with explainable reasoning — not a black box score.",
             color: "#a78bfa",
             stat: "50+ career domains analyzed",
         },
         {
-            icon: "🗺️",
+            icon: "map",
             title: "Actionable Roadmaps",
             desc: "Not just 'you'd be good at X'. You get a step-by-step learning path with tools, timelines, and real milestones.",
             color: "#f472b6",
@@ -142,10 +142,10 @@ export default function Landing({ onStart, onLogin }) {
     ];
 
     const steps = [
-        { n: "01", icon: "💬", title: "Quick Onboarding", desc: "3 smart questions about your interests, goals, and work style", color: "#22d3ee" },
-        { n: "02", icon: "🧩", title: "Task Arena", desc: "2 behavioral challenges that reveal how you actually think under pressure", color: "#a78bfa" },
-        { n: "03", icon: "🤖", title: "AI Deep Analysis", desc: "Our engine maps your cognitive fingerprint across 50+ career domains", color: "#f472b6" },
-        { n: "04", icon: "🗺️", title: "Your Career Map", desc: "Personalized paths, skill scores, and a step-by-step learning roadmap", color: "#4ade80" },
+        { n: "01", icon: "01", title: "Quick Onboarding", desc: "3 smart questions about your interests, goals, and work style", color: "#22d3ee" },
+        { n: "02", icon: "02", title: "Task Arena", desc: "2 behavioral challenges that reveal how you actually think under pressure", color: "#a78bfa" },
+        { n: "03", icon: "03", title: "AI Deep Analysis", desc: "Our engine maps your cognitive fingerprint across 50+ career domains", color: "#f472b6" },
+        { n: "04", icon: "04", title: "Your Career Map", desc: "Personalized paths, skill scores, and a step-by-step learning roadmap", color: "#4ade80" },
     ];
 
     return (
@@ -171,7 +171,6 @@ export default function Landing({ onStart, onLogin }) {
                         borderRadius: 99, padding: "7px 18px",
                         marginBottom: 32, fontSize: 13, color: "#22d3ee", fontWeight: 600,
                     }}>
-                        <span style={{ animation: "pulse 2s ease-in-out infinite" }}>✨</span>
                         AI-Powered Career Intelligence · Free to explore
                     </div>
 
@@ -296,7 +295,7 @@ export default function Landing({ onStart, onLogin }) {
                                     background: `linear-gradient(90deg, ${f.color}, transparent)`,
                                     marginBottom: 28,
                                 }} />
-                                <div style={{ fontSize: 44, marginBottom: 18 }}>{f.icon}</div>
+                                <div style={{ fontSize: 44, marginBottom: 18, fontFamily: "var(--font-display)", color: f.color, fontWeight: 800 }}>{f.icon}</div>
                                 <h3 className="ff" style={{ fontSize: 22, fontWeight: 700, marginBottom: 12, color: "#f1f5f9" }}>
                                     {f.title}
                                 </h3>
@@ -349,7 +348,8 @@ export default function Landing({ onStart, onLogin }) {
                                     background: hoveredStep === i ? `${s.color}20` : `${s.color}10`,
                                     border: `1px solid ${hoveredStep === i ? s.color + "60" : s.color + "28"}`,
                                     display: "flex", alignItems: "center", justifyContent: "center",
-                                    fontSize: 26,
+                                    fontSize: 26, fontFamily: "var(--font-display)",
+                                    fontWeight: 800, color: s.color,
                                     transition: "all 0.25s",
                                     transform: hoveredStep === i ? "scale(1.1)" : "scale(1)",
                                 }}>
@@ -401,7 +401,7 @@ export default function Landing({ onStart, onLogin }) {
                         }} />
 
                         <div style={{ position: "relative", zIndex: 1 }}>
-                            <div style={{ fontSize: 52, marginBottom: 20 }}>🧭</div>
+                            <div style={{ fontSize: 14, fontWeight: 700, color: "#22d3ee", letterSpacing: 2, marginBottom: 20 }}>PATHFINDER</div>
                             <h2 className="ff" style={{ fontSize: "clamp(24px,4vw,38px)", fontWeight: 700, marginBottom: 16 }}>
                                 Ready to find your <span className="gt">real path?</span>
                             </h2>

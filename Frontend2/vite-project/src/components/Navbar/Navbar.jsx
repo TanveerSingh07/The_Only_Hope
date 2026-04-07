@@ -50,7 +50,6 @@ export default function Navbar({ page, onNav, user, onAuthClick }) {
                     onClick={() => onNav("landing")}
                     style={{ background: "none", border: "none", cursor: "pointer" }}
                 >
-                    <span style={{ fontSize: 20 }}>🧭</span>
                     PathFinder
                 </button>
 

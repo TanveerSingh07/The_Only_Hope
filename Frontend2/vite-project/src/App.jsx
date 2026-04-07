@@ -19,6 +19,7 @@ import { useState } from "react";
 import Navbar from "./components/Navbar/Navbar";
 import Orbs from "./components/Orbs/Orbs";
 import Landing from "./screens/Landing";
+import Onboarding from "./screens/Onboarding";
 
 // ── Page imports (each will be created in upcoming steps) ──
 // We import them lazily with a fallback so the app doesn't crash
@@ -31,7 +32,6 @@ const Placeholder = ({ name }) => (
   }}>
     <Orbs />
     <div style={{ position: "relative", zIndex: 1, textAlign: "center" }}>
-      <div style={{ fontSize: 56, marginBottom: 16 }}>🚧</div>
       <h2 className="ff" style={{ fontSize: 28, marginBottom: 8 }}>{name}</h2>
       <p style={{ color: "#94a3b8" }}>Coming in the next step</p>
     </div>
@@ -91,7 +91,6 @@ export default function App() {
           zIndex: 999, display: "flex", alignItems: "center", justifyContent: "center",
         }}>
           <div className="glass" style={{ padding: 40, maxWidth: 400, width: "100%", margin: 24, textAlign: "center" }}>
-            <div style={{ fontSize: 40, marginBottom: 16 }}>🧭</div>
             <h2 className="ff" style={{ marginBottom: 8 }}>Auth Modal</h2>
             <p style={{ color: "#94a3b8", marginBottom: 24 }}>Coming in Step 4</p>
             {/* Temp: quick login for testing */}
@@ -131,7 +130,7 @@ export default function App() {
       )}
 
       {page === "onboarding" && (
-        <Placeholder name="Onboarding — Step 5" />
+        <Onboarding onComplete={(a) => { setObAnswers(a); nav("arena"); }} />
       )}
 
       {page === "arena" && (
