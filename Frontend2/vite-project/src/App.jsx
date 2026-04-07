@@ -18,6 +18,7 @@
 import { useState } from "react";
 import Navbar from "./components/Navbar/Navbar";
 import Orbs from "./components/Orbs/Orbs";
+import Landing from "./screens/Landing";
 
 // ── Page imports (each will be created in upcoming steps) ──
 // We import them lazily with a fallback so the app doesn't crash
@@ -123,7 +124,10 @@ export default function App() {
       {/* Each condition renders one screen. Props flow down from here. */}
 
       {page === "landing" && (
-        <Placeholder name="Landing Page — Step 4" />
+        <Landing
+          onStart={handleStart}
+          onLogin={() => { setAuthMode("login"); setShowAuth(true); }}
+        />
       )}
 
       {page === "onboarding" && (
