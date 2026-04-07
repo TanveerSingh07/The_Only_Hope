@@ -46,12 +46,35 @@ export default function Processing({ onComplete, taskResults, onboardingAnswers 
     useEffect(() => {
         const timers = [];
         STEPS.forEach((_, i) => { timers.push(setTimeout(() => setStep(i), i * 1200)); });
-        timers.push(setTimeout(() => {
-            // Use fallback directly — real API call handled by backend team
-            const r = fallback(onboardingAnswers);
-            setAnalysis(r);
-            setDone(true);
-        }, STEPS.length * 1200 + 400));
+        timers.push(setTimeout(async () => {
+    try {
+        // 1. Call your Express AI Route
+        const response = await fetch("http://localhost:5000/api/ai/analyze", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                task_metrics: taskResults || {}, 
+                user_preferences: onboardingAnswers || {}
+            })
+        });
+
+        if (!response.ok) throw new Error("Backend failed");
+
+        // 2. Get the real Gemini JSON
+        const realAiData = await response.json();
+        
+        // 3. Save it to React's state
+        setAnalysis(realAiData);
+        setDone(true);
+
+    } catch (error) {
+        console.error("AI Connection Failed! Using emergency fallback.", error);
+        // HACKATHON SAFETY NET: If your backend crashes during demo, it uses the fake data!
+        const r = fallback(onboardingAnswers);
+        setAnalysis(r);
+        setDone(true);
+    }
+}, STEPS.length * 1200 + 400));
         return () => timers.forEach(clearTimeout);
     }, []);
 

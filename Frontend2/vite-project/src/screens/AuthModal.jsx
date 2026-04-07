@@ -16,8 +16,35 @@ export default function AuthModal({ mode = "signup", onClose, onAuth }) {
     const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
 
-    const submit = () => {
-        onAuth({ name: name || email.split("@")[0] || "Explorer", email, mode: "authenticated" });
+    const submit = async () => {
+        try {
+            // Decide if we are hitting the login or register route
+            const endpoint = isLogin ? "/api/auth/login" : "/api/auth/register";
+            
+            const res = await fetch(`http://localhost:5000${endpoint}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ 
+                    name: name || "Explorer", 
+                    email: email, 
+                    password: pass 
+                })
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                // IT WORKED! Save the token and tell React we are logged in
+                localStorage.setItem("token", data.token);
+                onAuth({ name: data.user.name, email: data.user.email, mode: "authenticated" });
+            } else {
+                // Backend sent an error (e.g., wrong password)
+                alert(data.message || "Authentication failed.");
+            }
+        } catch (error) {
+            console.error("Auth Error:", error);
+            alert("Could not connect to the server. Make sure the backend is running!");
+        }
     };
 
     return (
