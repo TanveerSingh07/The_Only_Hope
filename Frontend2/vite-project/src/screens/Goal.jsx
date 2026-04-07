@@ -9,12 +9,6 @@ export default function Goal() {
         { label: "Actually Useful", desc: "We don't just show you data — we give you an actionable roadmap with real tools, timelines, and milestones.", color: "#f472b6" },
     ];
 
-    const team = [
-        { initials: "AC", name: "Dr. Aisha Chen", role: "AI Research Lead" },
-        { initials: "MR", name: "Marcus Rivera", role: "Behavioral Psychologist" },
-        { initials: "SP", name: "Sofia Patel", role: "UX & Product Design" },
-    ];
-
     return (
         <div style={{ minHeight: "100vh", padding: "88px 28px 80px", position: "relative" }}>
             <Orbs />
@@ -44,7 +38,7 @@ export default function Goal() {
                 </div>
 
                 {/* Problem statement */}
-                <div className="glass" style={{ padding: "48px 44px", textAlign: "center", marginBottom: 80, borderTop: "1px solid rgba(244,114,182,.2)" }}>
+                <div className="glass" style={{ padding: "48px 44px", textAlign: "center", borderTop: "1px solid rgba(244,114,182,.2)" }}>
                     <h2 className="ff" style={{ fontSize: 34, fontWeight: 700, marginBottom: 18 }}>
                         The Problem We're <span className="gt">Solving</span>
                     </h2>
@@ -53,25 +47,6 @@ export default function Goal() {
                     </p>
                 </div>
 
-                {/* Team */}
-                <div style={{ textAlign: "center" }}>
-                    <h2 className="ff" style={{ fontSize: 36, fontWeight: 700, marginBottom: 40 }}>The <span className="gt">Team</span></h2>
-                    <div style={{ display: "flex", gap: 22, justifyContent: "center", flexWrap: "wrap" }}>
-                        {team.map((m, i) => (
-                            <div key={i} className="glass hs" style={{ padding: "28px 34px", textAlign: "center", minWidth: 200 }}>
-                                <div style={{
-                                    width: 52, height: 52, borderRadius: "50%", margin: "0 auto 14px",
-                                    background: "linear-gradient(135deg,#22d3ee,#a78bfa)",
-                                    display: "flex", alignItems: "center", justifyContent: "center",
-                                }}>
-                                    <span className="ff" style={{ fontWeight: 800, fontSize: 14, color: "#05030e" }}>{m.initials}</span>
-                                </div>
-                                <div className="ff" style={{ fontWeight: 700, fontSize: 18, marginBottom: 5 }}>{m.name}</div>
-                                <div style={{ color: "#94a3b8", fontSize: 14 }}>{m.role}</div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
             </div>
         </div>
     );
