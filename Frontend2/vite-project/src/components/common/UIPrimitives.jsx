@@ -2,7 +2,7 @@
 // Reusable micro-components used across every screen.
 // Keeping them here avoids copy-pasting the same JSX everywhere.
 
-import { COLORS } from "../../../constants/theme";
+
 
 // ── Btn ──────────────────────────────────────────────────────
 // A single button component with 4 visual variants.
